@@ -74,11 +74,6 @@ body{
 .small{font-size:12px;color:var(--muted);line-height:1.7}
 </style>
 </head>
-  <script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./service-worker.js');
-}
-</script>
 <body>
 <div class="app">
   <div class="header">
@@ -111,5 +106,11 @@ if ('serviceWorker' in navigator) {
     <div class="small">各レースを登録して、勝負レース抽出と総予算配分を行う司令塔ページです。細かい予想ではなく、どれを買うかの判断に使います。</div>
   </div>
 </div>
+  
+  <script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./service-worker.js');
+}
+</script>
 </body>
 </html>

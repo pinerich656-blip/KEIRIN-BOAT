@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>最強AIメニュー</title>
+<meta name="theme-color" content="#0b1220">
+<style>
+:root{
+  --line:#243a63; --text:#edf4ff; --muted:#9fb3d9;
+  --blue:#2563eb; --cyan:#06b6d4; --green:#16a34a; --gold:#f59e0b; --violet:#7c3aed;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:
+    radial-gradient(circle at top left,#16335f 0%,#08101c 42%),
+    linear-gradient(180deg,#08101c,#091221);
+}
+.app{max-width:430px;margin:auto;min-height:100vh;padding:0 10px 30px}
+.header{
+  padding:20px 14px 24px;
+  margin:0 -10px 10px;
+  background:linear-gradient(135deg,#0f172a,#1d4ed8 58%,#06b6d4);
+  border-bottom-left-radius:24px;border-bottom-right-radius:24px;
+  box-shadow:0 12px 26px rgba(0,0,0,.35);
+}
+.header h1{margin:0;font-size:24px}
+.header p{margin:6px 0 0;font-size:12px;opacity:.94}
+.card{
+  background:linear-gradient(180deg,rgba(18,29,52,.98),rgba(11,20,36,.98));
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:16px;
+  margin:12px 0;
+}
+.hero{
+  border-radius:20px;
+  padding:18px;
+  text-align:center;
+  background:linear-gradient(135deg,#0b1220,#1e3a8a 58%,#0891b2);
+  border:1px solid #345bab;
+}
+.hero .big{font-size:28px;font-weight:900;line-height:1.3}
+.hero .sub{font-size:13px;opacity:.95;margin-top:8px}
+.badge{
+  display:inline-block;
+  padding:7px 11px;
+  border-radius:999px;
+  margin:4px;
+  font-weight:800;
+}
+.good{background:linear-gradient(135deg,#059669,#16a34a)}
+.gold{background:linear-gradient(135deg,#f59e0b,#facc15);color:#111827}
+.tip{background:linear-gradient(135deg,#2563eb,#7c3aed)}
+.btn{
+  display:block;
+  width:100%;
+  text-decoration:none;
+  color:#fff;
+  font-weight:900;
+  text-align:center;
+  padding:17px 14px;
+  border-radius:18px;
+  margin-top:10px;
+}
+.btn-boat{background:linear-gradient(135deg,#2563eb,#06b6d4)}
+.btn-keirin{background:linear-gradient(135deg,#7c3aed,#2563eb)}
+.btn-unified{background:linear-gradient(135deg,#f59e0b,#f97316)}
+.small{font-size:12px;color:var(--muted);line-height:1.7}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <h1>最強AIメニュー</h1>
+    <p>ボート・競輪・統合抽出を分けて使うトップページ</p>
+  </div>
+
+  <div class="card">
+    <div class="hero">
+      <div class="big">ボートは boat.html<br>競輪は keirin.html<br>まとめ管理は unified.html</div>
+      <div class="sub">1つに詰め込まず、役割ごとに分けた見やすい構成です。</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="badge good">ボート専用</span>
+    <a class="btn btn-boat" href="boat.html">🚤 ボートAIを開く</a>
+    <div class="small">BOAT RACE AI PRO MAX を使うページです。1マーク展開予想、勝ち筋説明、AI値順位、買い目、資金配分をここに集約します。</div>
+  </div>
+
+  <div class="card">
+    <span class="badge tip">競輪専用</span>
+    <a class="btn btn-keirin" href="keirin.html">🚴 競輪AIを開く</a>
+    <div class="small">競輪AIを使うページです。ライン展開、勝ち筋説明、AI値順位、買い目、資金配分をここにまとめます。</div>
+  </div>
+
+  <div class="card">
+    <span class="badge gold">統合管理</span>
+    <a class="btn btn-unified" href="unified.html">🧠 統合AIを開く</a>
+    <div class="small">各レースを登録して、勝負レース抽出と総予算配分を行う司令塔ページです。細かい予想ではなく、どれを買うかの判断に使います。</div>
+  </div>
+</div>
+</body>
+</html>

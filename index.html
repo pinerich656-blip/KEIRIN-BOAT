@@ -282,6 +282,73 @@ function parseRaw(text){
   return racers.sort((a, b) => a.car_no - b.car_no);
 }
 
+function parseWinticket(text){
+  const lines = text
+    .replace(/　/g,' ')
+    .split('\n')
+    .map(l=>l.trim())
+    .filter(Boolean);
+
+  const racers = [];
+  let i = 0;
+
+  while(i < lines.length){
+
+    if(!/^\d+$/.test(lines[i])){
+      i++;
+      continue;
+    }
+
+    const car = lines[i];
+    const name = lines[i+1] || '';
+
+    let infoLine = '';
+    for(let j=i+2;j<i+6;j++){
+      if(lines[j] && lines[j].match(/[A-Z]\d/)){
+        infoLine = lines[j];
+        break;
+      }
+    }
+
+    let score = 0;
+    for(let j=i+2;j<i+10;j++){
+      if(/^\d+\.\d+$/.test(lines[j])){
+        score = lines[j];
+        break;
+      }
+    }
+
+    const nums = [];
+    for(let j=i+2;j<i+20;j++){
+      if(/^\d+$/.test(lines[j])){
+        nums.push(lines[j]);
+      }
+    }
+
+    if(nums.length >= 5){
+      const pref = infoLine.split(' ')[0] || '';
+      const style = (infoLine.match(/[逃追両]/) || ['両'])[0];
+
+      racers.push({
+        car_no: parseInt(car),
+        name: name,
+        pref: pref,
+        style: style,
+        score: parseFloat(score),
+        nige: parseInt(nums[0]),
+        makuri: parseInt(nums[1]),
+        sashi: parseInt(nums[2]),
+        mark: parseInt(nums[3]),
+        b: parseInt(nums[4])
+      });
+    }
+
+    i += 10;
+  }
+
+  return racers;
+}
+  
 function parseLines(lineInput, racers){
   const map = {};
   const txt = cleanLine(lineInput);
@@ -541,7 +608,7 @@ document.getElementById('analyzeBtn').addEventListener('click', ()=>{
     document.getElementById('debug').textContent =
       '--- 貼り付け後の正規化文字列 ---\n' + normalized;
 
-    const racers = parseRaw(rawValue);
+    const racers = parseWinticket(rawValue);
 
     if (racers.length < 3) {
       msg.textContent = '解析できませんでした。貼り付け形式が崩れているか、数字が足りません。';

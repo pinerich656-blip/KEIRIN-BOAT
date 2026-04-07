@@ -198,6 +198,47 @@ function parseRaw(text){
     const carNo = parseInt(filtered[i], 10);
     const name = filtered[i + 1] || '';
     const info = filtered[i + 2] || '';
+    const numLine = filtered[i + 3] || '';
+
+    if (!name || !/\/.+\//.test(info)) {
+      i++;
+      continue;
+    }
+
+    // 数字6個を1行から読む
+    const nums = numLine.split(' ').filter(Boolean);
+
+    if (nums.length >= 6 &&
+        /^-?\d+(?:\.\d+)?$/.test(nums[0]) &&
+        /^-?\d+$/.test(nums[1]) &&
+        /^-?\d+$/.test(nums[2]) &&
+        /^-?\d+$/.test(nums[3]) &&
+        /^-?\d+$/.test(nums[4]) &&
+        /^-?\d+$/.test(nums[5])) {
+
+      const safeName = name.replace(/追加/g, '').trim();
+      const parts = info.split('/').map(v => v.trim());
+      const pref = (parts[0] || '').replace(/\s+/g, '');
+      const style = ((parts[2] || '両').match(/[逃両追]/) || ['両'])[0];
+
+      racers.push({
+        car_no: carNo,
+        name: safeName,
+        pref,
+        style,
+        score: parseFloat(nums[0]) || 0,
+        nige: parseInt(nums[1], 10) || 0,
+        makuri: parseInt(nums[2], 10) || 0,
+        sashi: parseInt(nums[3], 10) || 0,
+        mark: parseInt(nums[4], 10) || 0,
+        b: parseInt(nums[5], 10) || 0
+      });
+
+      i += 4;
+      continue;
+    }
+
+    // 旧形式: 数字が縦並び6行
     const score = filtered[i + 3] || '';
     const nige = filtered[i + 4] || '';
     const makuri = filtered[i + 5] || '';
@@ -206,8 +247,6 @@ function parseRaw(text){
     const b = filtered[i + 8] || '';
 
     if (
-      name &&
-      /\/.+\//.test(info) &&
       /^-?\d+(?:\.\d+)?$/.test(score) &&
       /^-?\d+$/.test(nige) &&
       /^-?\d+$/.test(makuri) &&
@@ -234,15 +273,16 @@ function parseRaw(text){
       });
 
       i += 9;
-    } else {
-      i++;
+      continue;
     }
+
+    i++;
   }
 
   return racers.sort((a, b) => a.car_no - b.car_no);
 }
 
-function parseLines(lineInput, racers){
+  function parseLines(lineInput, racers){
   const map = {};
   const txt = cleanLine(lineInput);
 

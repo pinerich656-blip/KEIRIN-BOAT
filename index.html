@@ -39,7 +39,11 @@ small{color:#94a3b8}
 <button id="analyzeBtn" type="button">解析する</button>
 <div id="msg" style="margin-top:10px;color:#fca5a5;white-space:pre-wrap"></div>
 </div>
-<div id="out"></div>
+<div class="card">
+  <h2>デバッグ</h2>
+  <pre id="debug" style="white-space:pre-wrap;word-break:break-all;color:#93c5fd"></pre>
+</div>
+ <div id="out"></div>
 <script>
 const sample = `枠 番
 車 番
@@ -397,7 +401,17 @@ document.getElementById('analyzeBtn').addEventListener('click', ()=>{
   msg.textContent = '';
 
   try {
-    const racers = parseRaw(document.getElementById('raw').value);
+    const rawValue = document.getElementById('raw').value;
+    const normalized = String(rawValue || '')
+      .replace(/[\u2028\u2029]/g, '\n')
+      .replace(/[\u00A0\u200B-\u200D\u2060\uFEFF]/g, ' ')
+      .replace(/\r/g, '\n')
+      .replace(/　/g, ' ');
+
+    document.getElementById('debug').textContent =
+      '--- 貼り付け後の正規化文字列 ---\n' + normalized;
+
+    const racers = parseRaw(rawValue);
 
     if (racers.length < 3) {
       msg.textContent = '解析できませんでした。貼り付け形式が崩れているか、数字が足りません。';

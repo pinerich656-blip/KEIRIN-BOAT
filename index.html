@@ -481,26 +481,17 @@ document.getElementById('analyzeBtn').addEventListener('click', ()=>{
     }
 
     const enriched = enrich(racers, document.getElementById('lineInput').value);
-　　　const tickets = buildTickets(enriched, parseOdds(document.getElementById('odds').value));
-
+    const tickets = buildTickets(enriched, parseOdds(document.getElementById('odds').value));
     const mainTickets = addMainLineTickets(enriched, document.getElementById('lineInput').value);
 
-    const allTickets = [...new Set([
-     ...tickets.map(t => t.ticket),
-     ...mainTickets
-])];
+    const finalTickets = tickets.sort((a,b)=>{
+      if (mainTickets.includes(a.ticket) && !mainTickets.includes(b.ticket)) return -1;
+      if (!mainTickets.includes(a.ticket) && mainTickets.includes(b.ticket)) return 1;
+      return b.ev - a.ev;
+    });
 
-const finalTickets = tickets.sort((a,b)=>{
-  if (mainTickets.includes(a.ticket)) return -1;
-  if (mainTickets.includes(b.ticket)) return 1;
-  return b.ev - a.ev;
-});
-
-msg.textContent = `${racers.length}名を解析しました。`;
-render(enriched, finalTickets);
-  
     msg.textContent = `${racers.length}名を解析しました。`;
-    render(enriched, tickets);
+    render(enriched, finalTickets);
   } catch (e) {
     msg.textContent = '解析エラー: ' + e.message;
     document.getElementById('out').innerHTML = '';

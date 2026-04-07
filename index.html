@@ -416,6 +416,27 @@ function buildTickets(racers, oddsMap){
   return tickets.slice(0, 20);
 }
 
+function addMainLineTickets(racers, lineInput){
+  const groups = lineInput.split('/').map(g => g.trim()).filter(Boolean);
+  const results = [];
+
+  groups.forEach(grp => {
+    const nums = grp.split('-').map(n => parseInt(n.trim(),10)).filter(Boolean);
+    if (nums.length >= 2){
+      const head = nums[0];
+      const second = nums[1];
+
+      racers.forEach(r => {
+        if (r.car_no !== head && r.car_no !== second){
+          results.push(`${head}-${second}-${r.car_no}`);
+        }
+      });
+    }
+  });
+
+  return results;
+}
+  
 function cls(ev){
   return ev >= 1.2 ? 'good' : ev >= 1.0 ? 'mid' : 'bad';
 }
@@ -460,8 +481,24 @@ document.getElementById('analyzeBtn').addEventListener('click', ()=>{
     }
 
     const enriched = enrich(racers, document.getElementById('lineInput').value);
-    const tickets = buildTickets(enriched, parseOdds(document.getElementById('odds').value));
+　　　const tickets = buildTickets(enriched, parseOdds(document.getElementById('odds').value));
 
+    const mainTickets = addMainLineTickets(enriched, document.getElementById('lineInput').value);
+
+    const allTickets = [...new Set([
+     ...tickets.map(t => t.ticket),
+     ...mainTickets
+])];
+
+const finalTickets = tickets.sort((a,b)=>{
+  if (mainTickets.includes(a.ticket)) return -1;
+  if (mainTickets.includes(b.ticket)) return 1;
+  return b.ev - a.ev;
+});
+
+msg.textContent = `${racers.length}名を解析しました。`;
+render(enriched, finalTickets);
+  
     msg.textContent = `${racers.length}名を解析しました。`;
     render(enriched, tickets);
   } catch (e) {

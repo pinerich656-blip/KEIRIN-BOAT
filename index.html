@@ -614,13 +614,25 @@ function prob(a,b,c, flow){
     b.chase * 0.9 +
     c.attack * 0.8;
 
-  if (a.lead >= 130) total *= 1.10;
+  // 逃げ1強で対抗不在なら信頼度アップ
+if (a.lead >= 130 && a.b >= 10) {
+  total *= 1.25;
+}
+
+// 番手も強いならさらに安定
+if (a.lead >= 130 && b.chase >= 85) {
+  total *= 1.15;
+}
   
   // 頭の強制フィルター
   if (a.style === '逃' && a.lead >= 120) total *= 1.18;
   if (a.lead < 50) total *= 0.90;
   if (a.line_pos === 2) total *= 0.96;
 
+  // ライン決着の安定強化（←これ追加）
+if (a.line === b.line) total *= 1.12;
+if (a.line === b.line && b.line === c.line) total *= 1.08;
+  
   // 基本
   if (flow.smooth) {
     if (a.line_pos === 1 && b.line_pos === 2) total *= 1.10;

@@ -36,8 +36,11 @@ small{color:#94a3b8}
 1-2-4 = 12.8"></textarea>
 </div>
 <div class="card">
-<button id="analyzeBtn" type="button">解析する</button>
-<div id="msg" style="margin-top:10px;color:#fca5a5;white-space:pre-wrap"></div>
+  <div style="display:flex; gap:10px;">
+    <button id="analyzeBtn" type="button">解析する</button>
+    <button id="clearBtn" type="button" style="background:#ef4444;">全てクリア</button>
+  </div>
+  <div id="msg"></div>
 </div>
 <div class="card">
   <h2>デバッグ</h2>
@@ -857,6 +860,22 @@ const finalTickets = [...hon, ...chu, ...dai];
     msg.textContent = '解析エラー: ' + e.message;
     document.getElementById('out').innerHTML = '';
   }
+});
+
+  document.getElementById('clearBtn').addEventListener('click', ()=>{
+  if (!confirm('全てクリアしますか？')) return;
+    // 入力系
+  document.getElementById('raw').value = '';
+  document.getElementById('lineInput').value = '';
+  document.getElementById('odds').value = '';
+
+  // 表示系
+  document.getElementById('out').innerHTML = '';
+  document.getElementById('msg').textContent = '';
+  document.getElementById('debug').textContent = '';
+
+  // UX
+  document.getElementById('raw').focus();
 });
 </script>
 </body>

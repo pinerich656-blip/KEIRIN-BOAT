@@ -609,8 +609,13 @@ function rankBoost(rank){
 
   
 function prob(a,b,c, flow){
-  let total = a.lead + b.chase + c.attack;
+  let total =
+    a.lead * 1.25 +
+    b.chase * 0.9 +
+    c.attack * 0.8;
 
+  if (a.lead >= 130) total *= 1.10;
+  ^_^_^
   // 頭の強制フィルター
   if (a.style === '逃' && a.lead >= 120) total *= 1.18;
   if (a.lead < 50) total *= 0.90;

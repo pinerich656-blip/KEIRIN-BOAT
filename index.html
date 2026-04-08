@@ -633,6 +633,12 @@ function prob(a,b,c, flow){
   if (a.line === b.line) total *= 1.08;
   if (a.line === b.line && b.line === c.line) total *= 1.05;
 
+// 強い逃げは素直に頭
+if (a.style === '逃' && a.lead >= 120) total *= 1.18;
+
+// 弱い頭は削る
+if (a.lead < 60) total *= 0.88;
+  
   // 長いライン優遇、単騎は少し不利
   if (a.line_len >= 3) total *= 1.08;
   if (a.line_len === 1) total *= 0.90;

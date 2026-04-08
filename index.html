@@ -702,7 +702,7 @@ function buildTickets(racers, oddsMap){
         const ev = odds ? p * odds : 0;
 
         // 人気補正込みの総合スコア
-        const score = ev * 0.45 + p * 40 + rankBoost(rank) * 6;
+        const score = ev * 0.20 + p * 55 + rankBoost(rank) * 10;
 
         const item = {
   ticket,
@@ -745,13 +745,13 @@ function addMainLineTickets(racers, lineInput){
 }
 
 function classifyTicket(t){
-  if (!t.odds) return '本線';
+  if (!t.odds) return '中穴';
 
-  // 人気上位＋確率高めは本線
-  if ((t.rank && t.rank <= 12 && t.p >= 0.22) || t.p >= 0.34) return '本線';
+  // 本線は人気上位だけ
+  if (t.rank && t.rank <= 8) return '本線';
 
-  // 大穴はかなり限定
-  if ((t.rank && t.rank >= 30) || t.odds >= 100) return '大穴';
+  // 大穴は高配当・人気薄
+  if ((t.rank && t.rank >= 25) || t.odds >= 100) return '大穴';
 
   return '中穴';
 }
@@ -828,9 +828,9 @@ document.getElementById('analyzeBtn').addEventListener('click', ()=>{
   return b.score - a.score;
 });
 
-const hon = sortedTickets.filter(t => t.bucket === '本線').slice(0, 8);
-const chu = sortedTickets.filter(t => t.bucket === '中穴').slice(0, 7);
-const dai = sortedTickets.filter(t => t.bucket === '大穴').slice(0, 5);
+const hon = sortedTickets.filter(t => t.bucket === '本線').slice(0, 6);
+const chu = sortedTickets.filter(t => t.bucket === '中穴').slice(0, 8);
+const dai = sortedTickets.filter(t => t.bucket === '大穴').slice(0, 3);
 
 const finalTickets = [...hon, ...chu, ...dai];
 

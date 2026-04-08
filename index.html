@@ -828,9 +828,22 @@ document.getElementById('analyzeBtn').addEventListener('click', ()=>{
   return b.score - a.score;
 });
 
-const hon = sortedTickets.filter(t => t.bucket === '本線').slice(0, 6);
-const chu = sortedTickets.filter(t => t.bucket === '中穴').slice(0, 8);
-const dai = sortedTickets.filter(t => t.bucket === '大穴').slice(0, 3);
+// オッズが入っている買い目だけ表示対象にする
+const pricedTickets = sortedTickets.filter(t => t.odds > 0);
+
+// 本線は人気順を少し優先
+const hon = pricedTickets
+  .filter(t => t.bucket === '本線')
+  .sort((a,b) => (a.rank || 999) - (b.rank || 999) || b.score - a.score)
+  .slice(0, 8);
+
+const chu = pricedTickets
+  .filter(t => t.bucket === '中穴')
+  .slice(0, 8);
+
+const dai = pricedTickets
+  .filter(t => t.bucket === '大穴')
+  .slice(0, 4);
 
 const finalTickets = [...hon, ...chu, ...dai];
 

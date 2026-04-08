@@ -302,85 +302,35 @@ function parseWinticket(text){
   const isInfoLine = s => /[一-龠ぁ-んァ-ン]/.test(s) && /(A\d|S\d)/.test(s);
 
   let i = 0;
-  while (i <= lines.length - 12) {
-    // WINTICKETの1選手ぶんを直接検出
+  while (i < lines.length) {
+
     // 通常形: 枠, 車, 名前, 情報, 得点, S, B, 脚, 逃, 捲, 差, マ
-if (
-  isOneDigit(lines[i]) &&
-  isOneDigit(lines[i + 1]) &&
-  isNameLine(lines[i + 2]) &&
-  isInfoLine(lines[i + 3]) &&
-  isScore(lines[i + 4]) &&
-  isInt(lines[i + 5]) &&
-  isInt(lines[i + 6]) &&
-  isStyle(lines[i + 7]) &&
-  isInt(lines[i + 8]) &&
-  isInt(lines[i + 9]) &&
-  isInt(lines[i + 10]) &&
-  isInt(lines[i + 11])
-) {
-  const waku = lines[i];
-  const carNo = lines[i + 1];
-  const name = lines[i + 2];
-  const info = lines[i + 3];
-  const score = lines[i + 4];
-  const sVal = lines[i + 5];
-  const bVal = lines[i + 6];
-  const style = lines[i + 7];
-  const nige = lines[i + 8];
-  const makuri = lines[i + 9];
-  const sashi = lines[i + 10];
-  const mark = lines[i + 11];
-
-  const pref = info.split(' ')[0] || '';
-
-  racers.push({
-    car_no: parseInt(carNo, 10),
-    waku_no: parseInt(waku, 10),
-    name,
-    pref,
-    style,
-    score: parseFloat(score) || 0,
-    s: parseInt(sVal, 10) || 0,
-    b: parseInt(bVal, 10) || 0,
-    nige: parseInt(nige, 10) || 0,
-    makuri: parseInt(makuri, 10) || 0,
-    sashi: parseInt(sashi, 10) || 0,
-    mark: parseInt(mark, 10) || 0
-  });
-
-  i += 12;
-  continue;
-}
-
-// 例外形: 車番だけ, 名前, 情報, 得点, S, B, 脚, 逃, 捲, 差, マ
-if (
-  isOneDigit(lines[i]) &&
-  isNameLine(lines[i + 1]) &&
-  isInfoLine(lines[i + 2]) &&
-  isScore(lines[i + 3]) &&
-  isInt(lines[i + 4]) &&
-  isInt(lines[i + 5]) &&
-  isStyle(lines[i + 6]) &&
-  isInt(lines[i + 7]) &&
-  isInt(lines[i + 8]) &&
-  isInt(lines[i + 9]) &&
-  isInt(lines[i + 10])
-) {
-  const waku = lines[i];
-  const carNo = lines[i];
-  const name = lines[i + 1];
-  const info = lines[i + 2];
-  const score = lines[i + 3];
-  const sVal = lines[i + 4];
-  const bVal = lines[i + 5];
-  const style = lines[i + 6];
-  const nige = lines[i + 7];
-  const makuri = lines[i + 8];
-  const sashi = lines[i + 9];
-  const mark = lines[i + 10];
-
-  
+    if (
+      isOneDigit(lines[i]) &&
+      isOneDigit(lines[i + 1]) &&
+      isNameLine(lines[i + 2]) &&
+      isInfoLine(lines[i + 3]) &&
+      isScore(lines[i + 4]) &&
+      isInt(lines[i + 5]) &&
+      isInt(lines[i + 6]) &&
+      isStyle(lines[i + 7]) &&
+      isInt(lines[i + 8]) &&
+      isInt(lines[i + 9]) &&
+      isInt(lines[i + 10]) &&
+      isInt(lines[i + 11])
+    ) {
+      const waku = lines[i];
+      const carNo = lines[i + 1];
+      const name = lines[i + 2];
+      const info = lines[i + 3];
+      const score = lines[i + 4];
+      const sVal = lines[i + 5];
+      const bVal = lines[i + 6];
+      const style = lines[i + 7];
+      const nige = lines[i + 8];
+      const makuri = lines[i + 9];
+      const sashi = lines[i + 10];
+      const mark = lines[i + 11];
 
       const pref = info.split(' ')[0] || '';
 
@@ -400,6 +350,54 @@ if (
       });
 
       i += 12;
+      continue;
+    }
+
+    // 例外形: 車番だけ, 名前, 情報, 得点, S, B, 脚, 逃, 捲, 差, マ
+    if (
+      isOneDigit(lines[i]) &&
+      isNameLine(lines[i + 1]) &&
+      isInfoLine(lines[i + 2]) &&
+      isScore(lines[i + 3]) &&
+      isInt(lines[i + 4]) &&
+      isInt(lines[i + 5]) &&
+      isStyle(lines[i + 6]) &&
+      isInt(lines[i + 7]) &&
+      isInt(lines[i + 8]) &&
+      isInt(lines[i + 9]) &&
+      isInt(lines[i + 10])
+    ) {
+      const waku = lines[i];
+      const carNo = lines[i];
+      const name = lines[i + 1];
+      const info = lines[i + 2];
+      const score = lines[i + 3];
+      const sVal = lines[i + 4];
+      const bVal = lines[i + 5];
+      const style = lines[i + 6];
+      const nige = lines[i + 7];
+      const makuri = lines[i + 8];
+      const sashi = lines[i + 9];
+      const mark = lines[i + 10];
+
+      const pref = info.split(' ')[0] || '';
+
+      racers.push({
+        car_no: parseInt(carNo, 10),
+        waku_no: parseInt(waku, 10),
+        name,
+        pref,
+        style,
+        score: parseFloat(score) || 0,
+        s: parseInt(sVal, 10) || 0,
+        b: parseInt(bVal, 10) || 0,
+        nige: parseInt(nige, 10) || 0,
+        makuri: parseInt(makuri, 10) || 0,
+        sashi: parseInt(sashi, 10) || 0,
+        mark: parseInt(mark, 10) || 0
+      });
+
+      i += 11;
       continue;
     }
 

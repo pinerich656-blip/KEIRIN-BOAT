@@ -647,7 +647,7 @@ function prob(a,b,c, flow){
   if (b.line_len === 1 || b.style === '両') total *= 1.02;
   if (c.line_len === 1 || c.style === '両') total *= 1.04;
 
-  return Math.max(0.01, Math.min(total / 320, 0.42));
+  return Math.max(0.01, Math.min(total / 340, 0.55));
 }
 
 
@@ -655,7 +655,7 @@ function kelly(p, odds, bankroll = 10000){
   const b = odds - 1;
   if (b <= 0) return 0;
   let f = ((b * p) - (1 - p)) / b;
-  f = Math.max(0, f) * 0.5;
+  f = Math.max(0, f) * 0.35;
   let bet = Math.floor(bankroll * f / 100) * 100;
   return Math.max(0, Math.min(bet, bankroll * 0.2));
 }
@@ -681,7 +681,7 @@ function buildTickets(racers, oddsMap){
         const ev = odds ? p * odds : 0;
 
         // 人気補正込みの総合スコア
-        const score = ev * 0.7 + p * 30 + rankBoost(rank) * 5;
+        const score = ev * 0.85 + p * 18 + rankBoost(rank) * 2;
 
         const item = {
   ticket,
@@ -726,8 +726,12 @@ function addMainLineTickets(racers, lineInput){
 function classifyTicket(t){
   if (!t.odds) return '中穴';
 
-  if (t.rank && t.rank <= 10 && t.p >= 0.30) return '本線';
-  if ((t.rank && t.rank >= 25) || t.odds >= 80) return '大穴';
+  // 本線はかなり絞る
+  if (t.rank && t.rank <= 6 && t.odds <= 25 && t.p >= 0.28) return '本線';
+
+  // 大穴は人気薄かつ高オッズ
+  if ((t.rank && t.rank >= 20) || t.odds >= 60) return '大穴';
+
   return '中穴';
 }
   

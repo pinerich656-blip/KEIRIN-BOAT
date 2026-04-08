@@ -620,6 +620,10 @@ document.getElementById('analyzeBtn').addEventListener('click', ()=>{
 
     const racers = parseWinticket(rawValue);
 
+    document.getElementById('debug').textContent +=
+      '\n\n--- parseWinticket結果 ---\n' +
+      JSON.stringify(racers, null, 2);
+
     if (racers.length < 3) {
       msg.textContent = '解析できませんでした。貼り付け形式が崩れているか、数字が足りません。';
       document.getElementById('out').innerHTML = '';
@@ -631,14 +635,14 @@ document.getElementById('analyzeBtn').addEventListener('click', ()=>{
     const mainTickets = addMainLineTickets(enriched, document.getElementById('lineInput').value);
 
     const finalTickets = tickets.sort((a,b)=>{
-  if (mainTickets.includes(a.ticket) && !mainTickets.includes(b.ticket)) return -1;
-  if (!mainTickets.includes(a.ticket) && mainTickets.includes(b.ticket)) return 1;
+      if (mainTickets.includes(a.ticket) && !mainTickets.includes(b.ticket)) return -1;
+      if (!mainTickets.includes(a.ticket) && mainTickets.includes(b.ticket)) return 1;
 
-  const scoreA = a.ev * 0.7 + a.p * 30;
-  const scoreB = b.ev * 0.7 + b.p * 30;
+      const scoreA = a.ev * 0.7 + a.p * 30;
+      const scoreB = b.ev * 0.7 + b.p * 30;
 
-  return scoreB - scoreA;
-});
+      return scoreB - scoreA;
+    });
 
     msg.textContent = `${racers.length}名を解析しました。`;
     render(enriched, finalTickets);

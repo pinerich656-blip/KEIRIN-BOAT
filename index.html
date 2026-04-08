@@ -647,7 +647,7 @@ function prob(a,b,c, flow){
   if (b.line_len === 1 || b.style === '両') total *= 1.02;
   if (c.line_len === 1 || c.style === '両') total *= 1.04;
 
-  return Math.max(0.01, Math.min(total / 340, 0.55));
+  return Math.max(0.01, Math.min(total / 420, 0.42));
 }
 
 

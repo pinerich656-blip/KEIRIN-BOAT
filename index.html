@@ -649,6 +649,49 @@ const finalTickets = [...hon, ...chu, ...dai];
   // UX
   document.getElementById('raw').focus();
 });
+  // --- ここから追加 ---
+
+// 1. クリップボードからデータを吸い込んで解析する関数
+async function autoPasteAndAnalyze() {
+  try {
+    const text = await navigator.clipboard.readText();
+    if (!text) return;
+
+    // 競輪データ特有のキーワード（競走得点や脚質）が含まれているかチェック
+    if (text.includes(".") && (text.includes("逃") || text.includes("追") || text.includes("両"))) {
+      const rawEl = document.getElementById('raw');
+      
+      // すでに同じデータが入っていなければ処理
+      if (rawEl.value !== text) {
+        rawEl.value = text;
+        
+        // メッセージを表示して自動クリック
+        const msg = document.getElementById('msg');
+        msg.style.color = "#22c55e";
+        msg.textContent = "クリップボードから新しい出走表を読み込みました！";
+        
+        // 少しだけ待ってから解析ボタンを自動実行
+        setTimeout(() => {
+          document.getElementById('analyzeBtn').click();
+        }, 300);
+      }
+    }
+  } catch (err) {
+    console.log("クリップボードのアクセス許可待ち、または制限中です");
+  }
+}
+
+// 2. 画面がクリックされたとき、またはタブに戻ったときに実行
+window.addEventListener('focus', autoPasteAndAnalyze);
+document.addEventListener('click', (e) => {
+  // ボタン自体をクリックした時は邪魔しないようにする
+  if (e.target.tagName !== 'BUTTON' && e.target.tagName !== 'TEXTAREA') {
+    autoPasteAndAnalyze();
+  }
+});
+
+// --- ここまで追加 ---
+
 </script>
 </body>
 </html>
